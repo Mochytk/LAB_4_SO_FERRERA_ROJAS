@@ -3,8 +3,6 @@ import random as rd
 import time
 import math
 
-from regex import T
-
 class Celula(th.Thread):
     def __init__(self, id, tipo):
         self.id = id
@@ -13,38 +11,34 @@ class Celula(th.Thread):
         self.ronda_infeccion = None
         self.lock = th.Lock()
 
-    def infectar(self, ronda):
-        with self.lock:
-            if self.tipo == 'humana':
-                self.tipo = 'alien'
-                self.infectada = True
-                self.ronda_infeccion = ronda
-    
-def crear_celulas_base(total_celulas = 512, aliens_iniciales = 16):
-    # Números del 0 al 511 (ids de cada celula)
-    tot_cel = list(range(total_celulas))
-    cel_ali = rd.sample(tot_cel, aliens_iniciales)
+def logica_rondas(rondas, celulas):
+    while rondas:
+        t_in = time.time()
+        while time.time() - t_in <= 10:
+            pos_1 = rd.random(0, 511)
+            pos_2 = rd.random(0, 511)
+            celula_1 = celulas[pos_1]
+            celula_2 = celulas[pos_2]
+            if pos_1 != pos_2:
+                celula_1, celula_2 = enfrentamiento(celula_1, celula_2)
+                # escribir en el archivo rondas
+        rondas -= 1
 
-    celulas = []
-
-    for id in tot_cel:
-
-        if id in cel_ali:
-            tipo = 'alien'
-        else:
-            tipo = 'humano'
-
-        celula = Celula(id, tipo)
-        celulas.append(celula)
-
-    return celulas
+def enfrentamiento(celula_1, celula_2):
+    if celula_1.tipo == "alien" and celula_2.tipo == "humano":
+        if rd.random() > 0.3:
+            celula_2.tipo = "alien"
+    if celula_2.tipo == "alien" and celula_1.tipo == "humano":
+        if rd.random() > 0.3:
+            celula_1.tipo = "alien"
+    return celula_1, celula_2
 
 def main_bonus():
+    a = 0
     print("main_bonus")
 
 def main_base():
-    celulas = crear_celulas_base()
-    
+    a = 0
     print("main_base")
 
 bonus = False
