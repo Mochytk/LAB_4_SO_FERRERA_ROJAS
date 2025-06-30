@@ -1,5 +1,5 @@
 PYTHON = python3
-SCRIPT = lab_4_ferrera_rojas.py
+SCRIPT = LAB4_ferrera_rojas.py
 OUTPUT_FILES = aislamiento.txt diagnostico_final.txt ronda_*.txt acciones_anticuerpo.txt
 
 .PHONY: all run clean
